@@ -23,14 +23,23 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    // Playlist Collection
     const playlistCollection = client.db('studyWithAnis').collection('playlist');
+    // Playlist Collection
+    const messageCollection = client.db('studyWithAnis').collection('message');
     
     // Client Get Playlist Api
     app.get('/playlist', async(req, res) =>{
         const query = {};
-        const cursor = playlistCollection.find(query);
-        const playlist = await cursor.toArray();
+        const playlist = await playlistCollection.find(query).toArray();
         res.send(playlist);
+    })
+
+    // Client Post Messages Api
+    app.post('/messages', async(req, res) =>{
+        const messages = req.body;
+        const result = await messageCollection.insertOne(messages);
+        res.send(result);
     })
   } finally {
   }
