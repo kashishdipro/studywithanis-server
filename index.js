@@ -26,7 +26,9 @@ async function run() {
     // Playlist Collection
     const playlistCollection = client.db('studyWithAnis').collection('playlist');
     // Playlist Collection
-    const messageCollection = client.db('studyWithAnis').collection('message');
+    const messageCollection = client.db('studyWithAnis').collection('messages');
+    // Subscriber Collection
+    const subscriberCollection = client.db('studyWithAnis').collection('subscribers');
     
     // Client Get Playlist Api
     app.get('/playlist', async(req, res) =>{
@@ -35,10 +37,28 @@ async function run() {
         res.send(playlist);
     })
 
+    // Client Post Subscriber Api
+    app.post('/subscribers', async(req, res) =>{
+        const subscriber = req.body;
+        const result = await subscriberCollection.insertOne(subscriber);
+        res.send(result);
+    })
     // Client Post Messages Api
     app.post('/messages', async(req, res) =>{
-        const messages = req.body;
-        const result = await messageCollection.insertOne(messages);
+        const message = req.body;
+        const result = await messageCollection.insertOne(message);
+        res.send(result);
+    })
+    
+    // Client Get Messages Api
+    app.get('/messages', async(req, res) =>{
+        let query = {};
+        if (req.query.email) {
+            query = {
+                email : req.query.email
+            }
+        }
+        const result = await messageCollection.find(query).toArray();
         res.send(result);
     })
   } finally {
