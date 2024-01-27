@@ -40,9 +40,18 @@ async function run() {
     // Client Post Subscriber Api
     app.post('/subscribers', async(req, res) =>{
         const subscriber = req.body;
+        const query = {
+            email: subscriber.email
+        }
+        const alreadySubscriber = await subscriberCollection.find(query).toArray();
+        if (alreadySubscriber.length) {
+            const message = `You are already as a subscriber ${subscriber.email}`;
+            return res.send({acknowledged: false, message});
+        } 
         const result = await subscriberCollection.insertOne(subscriber);
         res.send(result);
     })
+
     // Client Post Messages Api
     app.post('/messages', async(req, res) =>{
         const message = req.body;
