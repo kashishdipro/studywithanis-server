@@ -62,11 +62,6 @@ async function run() {
     // Client Get Messages Api
     app.get('/messages', async(req, res) =>{
         let query = {};
-        if (req.query.email) {
-            query = {
-                email : req.query.email
-            }
-        }
         const result = await messageCollection.find(query).toArray();
         res.send(result);
     })
