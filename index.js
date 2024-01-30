@@ -52,6 +52,13 @@ async function run() {
         res.send(result);
     })
 
+    // Admin Get Subscriber Api
+    app.get('/subscribers', async(req, res) =>{
+        const query = {};
+        const result = await subscriberCollection.find(query).toArray();
+        res.send(result);
+    })
+
     // Client Post Messages Api
     app.post('/messages', async(req, res) =>{
         const message = req.body;
