@@ -72,6 +72,13 @@ async function run() {
         const result = await messageCollection.find(query).toArray();
         res.send(result);
     })
+
+    // Admin Post Playlist Api
+    app.post('/playlist', async(req, res) =>{
+        const playlist = req.body;
+        const result = await playlistCollection.insertOne(playlist);
+        res.send(result);
+    })
   } finally {
   }
 }
